@@ -1,19 +1,14 @@
-//selectors
+// selectors
+export const getUser = (state) => state.users;
 
-//actions
+// actions
 const createActionName = (actionName) => `app/users/${actionName}`;
 const LOG_IN = createActionName("LOG_IN");
 const LOG_OUT = createActionName("LOG_OUT");
 
-//action creators
-export const logIn = (payload) => ({
-  type: LOG_IN,
-  payload,
-});
-
-export const logOut = () => ({
-  type: LOG_OUT,
-});
+// action creators
+export const logIn = (payload) => ({ type: LOG_IN, payload });
+export const logOut = () => ({ type: LOG_OUT });
 
 const usersReducer = (statePart = null, action) => {
   switch (action.type) {
@@ -26,4 +21,4 @@ const usersReducer = (statePart = null, action) => {
   }
 };
 
-export default adsReducer;
+export default usersReducer;
