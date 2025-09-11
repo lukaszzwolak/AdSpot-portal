@@ -10,35 +10,31 @@ import { logIn } from "../../../redux/usersRedux";
 const Login = () => {
   const [login, setLogin] = useState("");
   const [password, setPassword] = useState("");
-  const [status, setStatus] = useState("");
+  const [status, setStatus] = useState(null);
   const dispatch = useDispatch();
 
   const handleSubmit = (e) => {
     e.preventDefault();
-
-    const options = {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ login, password }),
-    };
-
     setStatus("loading");
-    fetch(`${API_URL}/auth/login`, options)
-      .then((res) => {
+
+    fetch(`${API_URL}/auth/login`, {
+      method: "POST",
+      credentials: "include",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ login, password }),
+    })
+      .then(async (res) => {
         if (res.status === 200) {
+          const data = await res.json();
+          dispatch(logIn(data));
           setStatus("success");
-          dispatch(logIn({ login }));
-        } else if (res.status === 400) {
+        } else if (res.status === 400 || res.status === 401) {
           setStatus("clientError");
         } else {
           setStatus("serverError");
         }
       })
-      .catch((err) => {
-        setStatus("serverError");
-      });
+      .catch(() => setStatus("serverError"));
   };
 
   return (
@@ -51,21 +47,18 @@ const Login = () => {
           <p>You have been successfully logged in!</p>
         </Alert>
       )}
-
       {status === "serverError" && (
         <Alert variant="danger">
           <Alert.Heading>Something went wrong...</Alert.Heading>
           <p>Unexpected error... Try again!</p>
         </Alert>
       )}
-
       {status === "clientError" && (
         <Alert variant="danger">
           <Alert.Heading>Incorrect data</Alert.Heading>
           <p>Login or password are incorrect...</p>
         </Alert>
       )}
-
       {status === "loading" && (
         <Spinner animation="border" role="status" className="d-block mx-auto">
           <span className="visually-hidden">Loading...</span>
@@ -78,6 +71,7 @@ const Login = () => {
           type="text"
           value={login}
           onChange={(e) => setLogin(e.target.value)}
+          required
         />
       </Form.Group>
 
@@ -87,6 +81,7 @@ const Login = () => {
           type="password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
+          required
         />
       </Form.Group>
 

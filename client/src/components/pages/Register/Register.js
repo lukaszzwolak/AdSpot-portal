@@ -4,43 +4,35 @@ import Alert from "react-bootstrap/Alert";
 import Spinner from "react-bootstrap/Spinner";
 import { useState } from "react";
 import { API_URL } from "../../../config";
-import { Alert } from "bootstrap";
 
 const Register = () => {
   const [login, setLogin] = useState("");
   const [password, setPassword] = useState("");
   const [phone, setPhone] = useState("");
   const [avatar, setAvatar] = useState(null);
-  const [status, setStatus] = useState("null"); // null, loading, success, serverError, clientError, loginError
+  const [status, setStatus] = useState(null);
 
   const handleSubmit = (e) => {
     e.preventDefault();
-
     const fd = new FormData();
     fd.append("login", login);
     fd.append("password", password);
-    fd.append("phone", phone);
-    fd.append("avatar", avatar);
-
-    const options = {
-      method: "POST",
-      body: fd,
-    };
+    if (phone) fd.append("phone", phone);
+    if (avatar) fd.append("avatar", avatar);
 
     setStatus("loading");
-    fetch(`${API_URL}/api/auth/register`, options)
+    fetch(`${API_URL}/auth/register`, {
+      method: "POST",
+      credentials: "include",
+      body: fd,
+    })
       .then((res) => {
-        if (res.status === 201) {
-          setStatus("success");
-        } else if (res.status === 400) {
-          setStatus("clientError");
-        } else if (res.status === 401) {
-          setStatus("loginError");
-        } else {
-          setStatus("serverError");
-        }
+        if (res.status === 201) setStatus("success");
+        else if (res.status === 400) setStatus("clientError");
+        else if (res.status === 409) setStatus("loginError");
+        else setStatus("serverError");
       })
-      .catch((err) => setStatus("serverError"));
+      .catch(() => setStatus("serverError"));
   };
 
   return (
@@ -53,30 +45,26 @@ const Register = () => {
           <p>You have been successfully registered! You can now log in...</p>
         </Alert>
       )}
-
       {status === "serverError" && (
         <Alert variant="danger">
           <Alert.Heading>Something went wrong...</Alert.Heading>
           <p>Unexpected error... Try again!</p>
         </Alert>
       )}
-
       {status === "clientError" && (
         <Alert variant="danger">
-          <Alert.Heading>No enough data</Alert.Heading>
+          <Alert.Heading>Not enough data</Alert.Heading>
           <p>You have to fill all the fields.</p>
         </Alert>
       )}
-
       {status === "loginError" && (
-        <Alert variant="Warning">
+        <Alert variant="warning">
           <Alert.Heading>Login already in use</Alert.Heading>
-          <p>You have to use other login.</p>
+          <p>Please use a different login.</p>
         </Alert>
       )}
-
       {status === "loading" && (
-        <Spinner animation="border" role="status" className="block mx-auto">
+        <Spinner animation="border" role="status" className="d-block mx-auto">
           <span className="visually-hidden">Loading...</span>
         </Spinner>
       )}
@@ -88,6 +76,9 @@ const Register = () => {
           value={login}
           onChange={(e) => setLogin(e.target.value)}
           placeholder="Enter login"
+          minLength={3}
+          maxLength={50}
+          required
         />
       </Form.Group>
 
@@ -98,6 +89,9 @@ const Register = () => {
           value={password}
           onChange={(e) => setPassword(e.target.value)}
           placeholder="Password"
+          minLength={6}
+          maxLength={100}
+          required
         />
       </Form.Group>
 
@@ -115,6 +109,7 @@ const Register = () => {
         <Form.Label>Avatar</Form.Label>
         <Form.Control
           type="file"
+          accept="image/*"
           onChange={(e) => setAvatar(e.target.files[0])}
         />
       </Form.Group>
