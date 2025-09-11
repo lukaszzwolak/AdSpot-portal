@@ -1,11 +1,11 @@
 import { Container } from "react-bootstrap";
 import { Routes, Route } from "react-router-dom";
 
-//layout
+// layout
+import NavBar from "./components/views/NavBar/NavBar";
 import Footer from "./components/views/Footer/Footer";
-import Header from "./components/views/Header/Header";
 
-//pages
+// pages
 import Home from "./components/pages/Home/Home";
 import Ad from "./components/pages/Ad/Ad";
 import AdAdd from "./components/pages/AdAdd/AdAdd";
@@ -19,23 +19,26 @@ import NotFound from "./components/pages/NotFound/NotFound";
 
 const App = () => {
   return (
-    <main>
-      <Container>
-        <Routes>
-          <Route path="/" element={<Search />} />
-          <Route path="/ad/:id" element={<Ad />} />
-          <Route path="/ad/add" element={<AdAdd />} />
-          <Route path="/ad/edit/:id" element={<AdEdit />} />
-          <Route path="/ad/remove/:id" element={<AdRemove />} />
-          <Route path="/search/:searchPhrase" element={<Search />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/register" element={<Register />} />
-          <Route path="/logout" element={<Logout />} />
-          <Route path="*" element={<NotFound />} />
-        </Routes>
-        <Footer />
-      </Container>
-    </main>
+    <>
+      <NavBar />
+      <main>
+        <Container className="py-3">
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/ad/:id" element={<Ad />} />
+            <Route path="/ad/add" element={<AdAdd />} />
+            <Route path="/ad/edit/:id" element={<AdEdit />} />
+            <Route path="/ad/remove/:id" element={<AdRemove />} />
+            <Route path="/search/:searchPhrase" element={<Search />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/register" element={<Register />} />
+            <Route path="/logout" element={<Logout />} />
+            <Route path="*" element={<NotFound />} />
+          </Routes>
+        </Container>
+      </main>
+      <Footer />
+    </>
   );
 };
 
