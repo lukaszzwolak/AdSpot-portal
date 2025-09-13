@@ -42,13 +42,12 @@ Live demo:
 ## Development
 
 ### Run server
-```bash
 cd server
 yarn install
 yarn dev
+
 Run client
-bash
-]cd client
+cd client
 yarn install
 yarn start
 Deployment
@@ -61,4 +60,5 @@ Server serves client/build in production.
 Configure environment variables on Replit:
 
 PORT, MONGO_URI, SESSION_SECRET, NODE_ENV=production, CLIENT_URL.
+
 
