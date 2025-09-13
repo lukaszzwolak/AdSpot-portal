@@ -1,10 +1,9 @@
 import { Container, Nav, Navbar } from "react-bootstrap";
 import { NavLink } from "react-router-dom";
 import { useSelector } from "react-redux";
-import { getUser } from "../../../redux/usersRedux";
 
 const NavBar = () => {
-  const user = useSelector(getUser);
+  const user = useSelector((s) => s.users);
 
   return (
     <Navbar
@@ -15,14 +14,16 @@ const NavBar = () => {
     >
       <Container>
         <Navbar.Brand as={NavLink} to="/">
-          AdSpot
+          Ads.app
         </Navbar.Brand>
-        <Navbar.Toggle aria-controls="nav" />
-        <Navbar.Collapse id="nav">
+
+        <Navbar.Toggle aria-controls="main-nav" />
+        <Navbar.Collapse id="main-nav">
           <Nav className="ms-auto">
             <Nav.Link as={NavLink} to="/">
               Home
             </Nav.Link>
+
             {user ? (
               <>
                 <Nav.Link as={NavLink} to="/ad/add">
