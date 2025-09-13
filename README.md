@@ -48,15 +48,12 @@ yarn install
 yarn dev
 Run client
 bash
-Skopiuj kod
-cd client
+]cd client
 yarn install
 yarn start
 Deployment
 Build client with:
 
-bash
-Skopiuj kod
 cd client
 yarn build
 Server serves client/build in production.
@@ -64,3 +61,4 @@ Server serves client/build in production.
 Configure environment variables on Replit:
 
 PORT, MONGO_URI, SESSION_SECRET, NODE_ENV=production, CLIENT_URL.
+
