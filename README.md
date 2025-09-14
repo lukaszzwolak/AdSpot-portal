@@ -3,7 +3,7 @@
 A full-stack classifieds application built with **MERN stack** and **Redux**.  
 Users can browse, search, create, edit, and delete ads after logging in.  
 
-Live demo: 
+Live demo:  https://replit.com/@lukaszzwolak160/AdSpot-portal
 
 ---
 
@@ -60,5 +60,6 @@ Server serves client/build in production.
 Configure environment variables on Replit:
 
 PORT, MONGO_URI, SESSION_SECRET, NODE_ENV=production, CLIENT_URL.
+
 
 
